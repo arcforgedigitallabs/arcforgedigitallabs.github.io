@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcforge Digital Labs — Reversi</title>
+    <meta name="description" content="Reversi — the classic strategy board game for iPhone. Free to play with online multiplayer, AI opponents, and Elo ratings.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        :root {
+            --bg:       #0f1117;
+            --surface:  #1a1d27;
+            --border:   #2a2e3d;
+            --accent:   #4ade80;
+            --accent2:  #22c55e;
+            --fg:       #f0f0f0;
+            --muted:    #8b8fa8;
+            --radius:   12px;
+            --font:     -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 2rem;
+            background: rgba(15,17,23,0.85);
+            backdrop-filter: saturate(180%) blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em;
+            color: var(--fg); text-decoration: none;
+        }
+        .nav-logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+        .nav-links a {
+            color: var(--muted); text-decoration: none;
+            font-size: 0.9rem; transition: color 0.15s;
+        }
+        .nav-links a:hover { color: var(--fg); }
+        .nav-cta {
+            background: var(--accent); color: #0f1117;
+            padding: 0.45rem 1rem; border-radius: 8px;
+            font-size: 0.875rem; font-weight: 600;
+            text-decoration: none; transition: background 0.15s;
+        }
+        .nav-cta:hover { background: var(--accent2); }
+
+        /* ── HERO ── */
+        .hero {
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center;
+            padding: 6rem 1.5rem 5rem;
+            background: radial-gradient(ellipse 80% 60% at 50% -10%,
+                rgba(74,222,128,0.12) 0%, transparent 70%);
+        }
+        .badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            background: rgba(74,222,128,0.12);
+            border: 1px solid rgba(74,222,128,0.25);
+            color: var(--accent); font-size: 0.8rem; font-weight: 500;
+            padding: 0.3rem 0.75rem; border-radius: 100px;
+            margin-bottom: 1.5rem; letter-spacing: 0.04em;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700; line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
+        }
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--accent), #86efac);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.1rem; color: var(--muted);
+            max-width: 520px; margin: 0 auto 2.5rem;
+        }
+        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--accent); color: #0f1117;
+            padding: 0.75rem 1.5rem; border-radius: 10px;
+            font-size: 1rem; font-weight: 600; text-decoration: none;
+            transition: background 0.15s, transform 0.1s;
+        }
+        .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--surface); color: var(--fg);
+            border: 1px solid var(--border);
+            padding: 0.75rem 1.5rem; border-radius: 10px;
+            font-size: 1rem; font-weight: 500; text-decoration: none;
+            transition: border-color 0.15s, transform 0.1s;
+        }
+        .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+
+        /* ── BOARD PREVIEW ── */
+        .board-wrap {
+            margin: 3rem auto 0;
+            display: flex; justify-content: center;
+        }
+        .board {
+            display: grid; grid-template-columns: repeat(8, 1fr);
+            gap: 3px; background: #1a2e1a;
+            padding: 6px; border-radius: 10px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.6),
+                        0 0 0 1px rgba(74,222,128,0.15);
+            width: min(340px, 88vw);
+        }
+        .cell {
+            aspect-ratio: 1; background: #1e3a1e;
+            border-radius: 3px; display: flex; align-items: center; justify-content: center;
+        }
+        .disc {
+            width: 78%; height: 78%; border-radius: 50%;
+        }
+        .disc.b { background: #0f0f0f; box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+        .disc.w { background: #f0f0f0; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+        .hint { background: rgba(74,222,128,0.25); border-radius: 50%; width: 28%; height: 28%; }
+
+        /* ── FEATURES ── */
+        .features {
+            max-width: 960px; margin: 0 auto;
+            padding: 5rem 1.5rem;
+        }
+        .section-label {
+            text-align: center; color: var(--accent);
+            font-size: 0.8rem; font-weight: 600;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+        .section-title {
+            text-align: center; font-size: clamp(1.6rem, 4vw, 2.2rem);
+            font-weight: 700; letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+        .feature-card:hover { border-color: rgba(74,222,128,0.35); }
+        .feature-icon {
+            font-size: 1.5rem; margin-bottom: 0.75rem;
+        }
+        .feature-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .feature-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.55; }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 2rem;
+            display: flex; flex-wrap: wrap; gap: 1rem;
+            justify-content: space-between; align-items: center;
+        }
+        .footer-brand {
+            font-size: 0.875rem; color: var(--muted);
+        }
+        .footer-brand strong { color: var(--fg); }
+        .footer-links {
+            display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: var(--muted); text-decoration: none;
+            font-size: 0.875rem; transition: color 0.15s;
+        }
+        .footer-links a:hover { color: var(--fg); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            nav { padding: 0.875rem 1.25rem; }
+            .nav-links { display: none; }
+            footer { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <a class="nav-logo" href="/"><span>Arcforge</span> Digital Labs</a>
+    <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="mailto:support@arcforgedigitallabs.com">Support</a></li>
+    </ul>
+    <a class="nav-cta" href="https://apps.apple.com/app/reversi/id000000000">Download</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="badge">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+            <circle cx="5" cy="5" r="5"/>
+        </svg>
+        Now available on the App Store
+    </div>
+    <h1>The classic strategy<br>game, <em>reimagined</em>.</h1>
+    <p>
+        Play Reversi against a powerful AI or challenge players worldwide
+        in real-time online matches. Ranked by Elo. Built for iOS.
+    </p>
+    <div class="hero-actions">
+        <a class="btn-primary" href="https://apps.apple.com/app/reversi/id000000000">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            Download on the App Store
+        </a>
+        <a class="btn-secondary" href="#features">See features</a>
+    </div>
+
+    <!-- Decorative board -->
+    <div class="board-wrap">
+        <div class="board" id="board"></div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+    <p class="section-label">Features</p>
+    <h2 class="section-title">Everything you need to master Reversi</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3>Online Multiplayer</h3>
+            <p>Challenge players worldwide in real-time ranked matches with Elo ratings and a global leaderboard.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>Powerful AI</h3>
+            <p>Eight difficulty levels from beginner to expert. The hardest levels use full-game solving at endgame depth.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3>Opening Explorer</h3>
+            <p>Browse and study named openings, review master games, and build your opening repertoire.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🧩</div>
+            <h3>Puzzles</h3>
+            <p>Tactical puzzles with Elo-rated difficulty to sharpen your pattern recognition and calculation.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📖</div>
+            <h3>Interactive Tutorial</h3>
+            <p>Learn the rules, opening principles, endgame technique, and parity concepts step by step.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Customizable Themes</h3>
+            <p>Choose from multiple board and piece themes, with full dark mode support throughout the app.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-brand">
+        <strong>Arcforge Digital Labs LLC</strong><br>
+        7901 4th St N, STE 300 · St. Petersburg, FL 33702
+    </div>
+    <ul class="footer-links">
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/terms">Terms of Service</a></li>
+        <li><a href="mailto:support@arcforgedigitallabs.com">Support</a></li>
+        <li><a href="mailto:legal@arcforgedigitallabs.com">Legal</a></li>
+    </ul>
+    <p style="color:var(--muted);font-size:0.8rem;width:100%;text-align:right">
+        &copy; <span id="yr"></span> Arcforge Digital Labs LLC
+    </p>
+</footer>
+
+<script>
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Build an 8×8 board with the starting position + a few illustrative moves
+    const state = [
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,2,1,0,0,0],
+        [0,0,0,1,2,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+    ];
+    // hints for black (legal moves in starting position)
+    const hints = [[2,3],[3,2],[4,5],[5,4]];
+    const board = document.getElementById('board');
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            const v = state[r][c];
+            if (v === 1) {
+                const d = document.createElement('div');
+                d.className = 'disc b'; cell.appendChild(d);
+            } else if (v === 2) {
+                const d = document.createElement('div');
+                d.className = 'disc w'; cell.appendChild(d);
+            } else if (hints.some(([hr,hc]) => hr===r && hc===c)) {
+                const d = document.createElement('div');
+                d.className = 'hint'; cell.appendChild(d);
+            }
+            board.appendChild(cell);
+        }
+    }
+</script>
+</body>
+</html>
