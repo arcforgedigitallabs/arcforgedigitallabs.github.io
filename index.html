@@ -295,6 +295,20 @@
             grid-template-columns: repeat(3, minmax(0, 1fr));
         }
 
+        .screenshots-grid {
+            display: grid;
+            gap: var(--space-4);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .screenshots-grid img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-card);
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
         .card {
             height: 100%;
             padding: var(--space-5);
@@ -477,6 +491,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .screenshots-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
             .footer-inner {
                 grid-template-columns: 1fr;
             }
@@ -509,6 +527,10 @@
 
             .hero-badge-link img {
                 width: 168px;
+            }
+
+            .screenshots-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -565,13 +587,17 @@
                 </div>
 
                 <figure class="hero-visual">
-                    <img
-                        src="assets/app/phase29-step3-hero-placeholder.svg"
-                        alt="Placeholder Reversi product screenshot until Step 3 ships."
-                        width="1290"
-                        height="2796"
-                        data-step3-placeholder="true"
-                    >
+                    <picture>
+                        <source media="(min-width: 1024px)" srcset="assets/app/screenshots/liveMultiplayer-ipad-1.png">
+                        <source media="(min-width: 768px)" srcset="assets/app/screenshots/liveMultiplayer-ipad-1.png">
+                        <img
+                            src="assets/app/screenshots/liveMultiplayer-iphone-1.png"
+                            alt="Live multiplayer Reversi game in progress on iPhone"
+                            width="1290"
+                            height="2796"
+                            loading="eager"
+                        >
+                    </picture>
                 </figure>
             </section>
 
@@ -661,6 +687,27 @@
                             for a full tournament run or multiplayer session.
                         </p>
                     </article>
+                </div>
+            </section>
+
+            <section aria-labelledby="screenshots-heading">
+                <div class="section-heading">
+                    <p class="section-kicker">Gallery</p>
+                    <h2 id="screenshots-heading">
+                        A look inside the app.
+                    </h2>
+                    <p>
+                        From live play to deep review, everything is built for clarity and focus.
+                    </p>
+                </div>
+
+                <div class="screenshots-grid">
+                    <img src="assets/app/screenshots/liveMultiplayer-iphone-1.png" alt="Live multiplayer match" width="1290" height="2796" loading="lazy" decoding="async">
+                    <img src="assets/app/screenshots/gameReview-iphone-1.png" alt="Game Review analysis" width="1290" height="2796" loading="lazy" decoding="async">
+                    <img src="assets/app/screenshots/dailyPuzzle-iphone-1.png" alt="Daily puzzle interface" width="1290" height="2796" loading="lazy" decoding="async">
+                    <img src="assets/app/screenshots/tournament-iphone-1.png" alt="Tournament bracket view" width="1290" height="2796" loading="lazy" decoding="async">
+                    <img src="assets/app/screenshots/profile-iphone-1.png" alt="Player profile and stats" width="1290" height="2796" loading="lazy" decoding="async">
+                    <img src="assets/app/screenshots/theming-iphone-1.png" alt="Theme picker with custom board" width="1290" height="2796" loading="lazy" decoding="async">
                 </div>
             </section>
 
