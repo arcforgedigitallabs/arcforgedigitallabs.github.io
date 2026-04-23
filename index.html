@@ -1,846 +1,416 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- index.html -->
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reversi for iPhone and iPad | Arcforge Digital Labs</title>
-    <meta
-        name="description"
-        content="Reversi is a premium iPhone and iPad strategy game with live and async multiplayer, Game Review, daily puzzles, tournaments, themes, and an ad-free Premium tier."
-    >
-    <style>
-        :root {
-            --bg: #0a0a0f;
-            --surface: #16161f;
-            --surface-elevated: #1e1e2a;
-            --border: rgba(255, 255, 255, 0.08);
-            --border-strong: rgba(255, 255, 255, 0.16);
-            --accent: #4ade80;
-            --accent-secondary: #22c55e;
-            --board: #1a5f2a;
-            --board-border: #0d3d16;
-            --board-grid: rgba(61, 154, 82, 0.58);
-            --piece-black: #1a1a1a;
-            --piece-white: #f5f5f5;
-            --text: #f5f5f5;
-            --text-secondary: rgba(255, 255, 255, 0.72);
-            --text-muted: rgba(255, 255, 255, 0.56);
-            --shadow: 0 24px 64px rgba(0, 0, 0, 0.34);
-            --radius: 24px;
-            --radius-card: 16px;
-            --font-display: "SF Pro Rounded", "SF Pro Display",
-                -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            --font-body: "SF Pro Text", -apple-system, BlinkMacSystemFont,
-                "Segoe UI", sans-serif;
-            --space-1: 4px;
-            --space-2: 8px;
-            --space-3: 16px;
-            --space-4: 24px;
-            --space-5: 32px;
-            --space-6: 48px;
-            --space-7: 64px;
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            background:
-                radial-gradient(circle at top, rgba(74, 222, 128, 0.14), transparent 28%),
-                var(--bg);
-            color: var(--text);
-            font-family: var(--font-body);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        img {
-            display: block;
-            max-width: 100%;
-        }
-
-        a {
-            color: inherit;
-        }
-
-        a:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 4px;
-            border-radius: 12px;
-        }
-
-        .site-shell {
-            min-height: 100vh;
-        }
-
-        .nav {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: var(--space-4);
-            padding: var(--space-3) var(--space-5);
-            background: rgba(10, 10, 15, 0.82);
-            backdrop-filter: blur(16px) saturate(160%);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-logo {
-            text-decoration: none;
-            font-family: var(--font-display);
-            font-size: 0.95rem;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-        }
-
-        .nav-logo span {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: var(--space-4);
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: color 0.15s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text);
-        }
-
-        .hero {
-            display: grid;
-            grid-template-columns: minmax(0, 1.05fr) minmax(320px, 420px);
-            align-items: center;
-            gap: var(--space-6);
-            max-width: 1200px;
-            min-height: calc(100vh - 73px);
-            margin: 0 auto;
-            padding: var(--space-7) var(--space-5);
-        }
-
-        .hero-copy {
-            max-width: 620px;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-2);
-            margin-bottom: var(--space-4);
-            padding: 6px 12px;
-            border: 1px solid rgba(74, 222, 128, 0.22);
-            border-radius: 999px;
-            background: rgba(74, 222, 128, 0.08);
-            color: var(--accent);
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .eyebrow-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-        }
-
-        h1,
-        h2,
-        h3 {
-            margin: 0;
-            font-family: var(--font-display);
-            line-height: 1.08;
-            letter-spacing: -0.03em;
-        }
-
-        h1 {
-            font-size: clamp(2.75rem, 5vw, 4.6rem);
-            margin-bottom: var(--space-4);
-        }
-
-        .hero-subheadline {
-            margin: 0 0 var(--space-5);
-            color: var(--text-secondary);
-            font-size: clamp(1.05rem, 1.7vw, 1.2rem);
-            max-width: 58ch;
-        }
-
-        .hero-subheadline strong {
-            color: var(--text);
-            font-weight: 600;
-        }
-
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-3);
-            margin-top: var(--space-3);
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .hero-badge-link {
-            display: inline-flex;
-            width: fit-content;
-            transition: transform 0.15s ease;
-        }
-
-        .hero-badge-link:hover {
-            transform: translateY(-1px);
-        }
-
-        .hero-badge-link img {
-            width: 180px;
-            height: auto;
-        }
-
-        .hero-visual {
-            position: relative;
-            margin: 0;
-            padding: var(--space-4);
-            border: 1px solid var(--border);
-            border-radius: calc(var(--radius) + var(--space-2));
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
-                var(--surface);
-            box-shadow: var(--shadow);
-        }
-
-        .hero-visual::after {
-            content: "";
-            position: absolute;
-            inset: auto 18px 18px;
-            height: 28px;
-            border-radius: 999px;
-            background: rgba(0, 0, 0, 0.38);
-            filter: blur(18px);
-            z-index: 0;
-        }
-
-        .hero-visual img {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            border-radius: 30px;
-        }
-
-        main section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 var(--space-5) var(--space-7);
-        }
-
-        .section-heading {
-            max-width: 720px;
-            margin-bottom: var(--space-5);
-        }
-
-        .section-kicker {
-            margin: 0 0 var(--space-2);
-            color: var(--accent);
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .section-heading h2 {
-            font-size: clamp(2rem, 3vw, 3rem);
-            margin-bottom: var(--space-3);
-        }
-
-        .section-heading p {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-
-        .feature-grid,
-        .pricing-grid,
-        .trust-grid {
-            display: grid;
-            gap: var(--space-4);
-        }
-
-        .feature-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .pricing-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .trust-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .screenshots-grid {
-            display: grid;
-            gap: var(--space-4);
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .screenshots-grid img {
-            width: 100%;
-            height: auto;
-            border-radius: var(--radius-card);
-            border: 1px solid var(--border);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-        }
-
-        .card {
-            height: 100%;
-            padding: var(--space-5);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-card);
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)),
-                var(--surface);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-        }
-
-        .feature-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 56px;
-            height: 56px;
-            margin-bottom: var(--space-4);
-            border: 1px solid rgba(74, 222, 128, 0.22);
-            border-radius: 18px;
-            background: rgba(26, 95, 42, 0.24);
-            color: var(--accent);
-        }
-
-        .feature-card h3,
-        .pricing-card h3,
-        .trust-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: var(--space-3);
-        }
-
-        .feature-card p,
-        .pricing-card p,
-        .trust-card p,
-        .footer-copy,
-        .legal-note {
-            margin: 0;
-            color: var(--text-secondary);
-        }
-
-        .feature-card p + p,
-        .pricing-card p + p,
-        .trust-card p + p {
-            margin-top: var(--space-3);
-        }
-
-        .pricing-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pricing-card::before {
-            content: "";
-            position: absolute;
-            inset: 0 0 auto;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
-            opacity: 0.92;
-        }
-
-        .tier-label {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-2);
-            margin-bottom: var(--space-4);
-            color: var(--accent);
-            font-size: 0.82rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .pricing-list {
-            margin: var(--space-4) 0 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .pricing-list li {
-            position: relative;
-            margin-top: var(--space-3);
-            padding-left: var(--space-4);
-            color: var(--text-secondary);
-        }
-
-        .pricing-list li::before {
-            content: "";
-            position: absolute;
-            top: 0.7em;
-            left: 0;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-        }
-
-        .trust-card a,
-        .footer-links a,
-        .legal-note a {
-            color: var(--text);
-            text-decoration-color: rgba(74, 222, 128, 0.45);
-            text-underline-offset: 0.18em;
-        }
-
-        .trust-card a:hover,
-        .footer-links a:hover,
-        .legal-note a:hover {
-            color: var(--accent);
-        }
-
-        footer {
-            padding: 0 var(--space-5) var(--space-6);
-        }
-
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-top: var(--space-5);
-            border-top: 1px solid var(--border);
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) auto;
-            gap: var(--space-4);
-            align-items: start;
-        }
-
-        .footer-brand {
-            margin: 0 0 var(--space-3);
-            font-family: var(--font-display);
-            font-size: 1.05rem;
-            font-weight: 700;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-3);
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            justify-content: flex-end;
-        }
-
-        .legal-note {
-            max-width: 72ch;
-            margin-top: var(--space-4);
-            font-size: 0.9rem;
-        }
-
-        .copyright {
-            margin-top: var(--space-4);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 960px) {
-            .hero {
-                grid-template-columns: 1fr;
-                gap: var(--space-5);
-                padding-top: var(--space-6);
-                padding-bottom: var(--space-6);
-                min-height: auto;
-            }
-
-            .hero-copy,
-            .section-heading {
-                max-width: none;
-            }
-
-            .hero-visual {
-                max-width: 420px;
-                margin: 0 auto;
-            }
-
-            .feature-grid,
-            .trust-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pricing-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .screenshots-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .footer-inner {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-links {
-                justify-content: flex-start;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .nav,
-            .hero,
-            main section,
-            footer {
-                padding-left: var(--space-4);
-                padding-right: var(--space-4);
-            }
-
-            .nav {
-                flex-wrap: wrap;
-            }
-
-            .nav-links {
-                gap: var(--space-3);
-            }
-
-            .card {
-                padding: var(--space-4);
-            }
-
-            .hero-badge-link img {
-                width: 168px;
-            }
-
-            .screenshots-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary SEO -->
+  <title>Reversi for iPhone and iPad | Arcforge Digital Labs</title>
+  <meta
+    name="description"
+    content="Reversi is a premium iPhone and iPad strategy game with live and async multiplayer, Game Review, daily puzzles, tournaments, themes, and an ad-free Premium tier."
+  >
+  <link rel="canonical" href="https://www.arcforgedigitallabs.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.arcforgedigitallabs.com/">
+  <meta property="og:title" content="Reversi for iPhone and iPad | Arcforge Digital Labs">
+  <meta
+    property="og:description"
+    content="The anti-ad premium Reversi experience. Live multiplayer, engine-backed Game Review, daily puzzles, and tournaments — no ads on Premium."
+  >
+  <meta
+    property="og:image"
+    content="https://www.arcforgedigitallabs.com/assets/app/screenshots/liveMultiplayer-iphone-1.png"
+  >
+  <meta property="og:image:width" content="1290">
+  <meta property="og:image:height" content="2796">
+  <meta property="og:site_name" content="Arcforge Digital Labs">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Reversi for iPhone and iPad | Arcforge Digital Labs">
+  <meta
+    name="twitter:description"
+    content="The anti-ad premium Reversi experience. Live multiplayer, engine-backed Game Review, daily puzzles, and tournaments."
+  >
+  <meta
+    name="twitter:image"
+    content="https://www.arcforgedigitallabs.com/assets/app/screenshots/liveMultiplayer-iphone-1.png"
+  >
+
+  <!-- Tokens first — all colour / spacing / type vars live here -->
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <!-- Page styles -->
+  <link rel="stylesheet" href="/assets/css/home.css">
+
+  <!-- Structured data: Organisation -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Arcforge Digital Labs LLC",
+    "url": "https://www.arcforgedigitallabs.com",
+    "logo": "https://www.arcforgedigitallabs.com/assets/app/app-store-badge.svg",
+    "sameAs": [
+      "https://apps.apple.com/app/reversi/id0000000000"
+    ]
+  }
+  </script>
 </head>
 <body>
-    <div class="site-shell">
-        <nav class="nav" aria-label="Primary">
-            <a class="nav-logo" href="/"><span>Arcforge</span> Digital Labs</a>
-            <ul class="nav-links">
-                <li><a href="/privacy">Privacy</a></li>
-                <li><a href="/terms">Terms</a></li>
-                <li><a href="mailto:support@arcforgedigitallabs.com">Support</a></li>
-            </ul>
-        </nav>
+  <!-- Skip navigation (WCAG 2.2 SC 2.4.1) -->
+  <a class="skip-to-content" href="#main">Skip to main content</a>
 
-        <main>
-            <section class="hero" id="top">
-                <div class="hero-copy">
-                    <div class="eyebrow">
-                        <span class="eyebrow-dot" aria-hidden="true"></span>
-                        Reversi for iPhone and iPad
-                    </div>
-                    <h1>
-                        Reversi is a premium iPhone and iPad strategy game for
-                        online play, Game Review, and daily puzzles.
-                    </h1>
-                    <p class="hero-subheadline">
-                        <strong>The anti-ad premium Reversi experience</strong>
-                        for players who want one place to play, review, and
-                        improve. For players who know what chess.com did for
-                        chess, Reversi brings that same improvement loop to
-                        Othello with the first engine-based analysis tool for
-                        the category.
-                    </p>
-                    <!-- TODO(phase32): live App Store URL -->
-                    <a
-                        class="hero-badge-link"
-                        href="#TODO-phase32-app-store-url"
-                        data-phase29-appstore-badge="true"
-                        aria-label="Download Reversi on the App Store"
-                    >
-                        <img
-                            src="assets/app/app-store-badge.svg"
-                            alt="Download on the App Store"
-                            width="180"
-                            height="53"
-                        >
-                    </a>
-                    <div class="hero-meta" aria-label="Reversi highlights">
-                        <span>Live + async multiplayer</span>
-                        <span>Daily puzzle</span>
-                        <span>Free and Premium tiers</span>
-                    </div>
-                </div>
+  <div class="site-shell">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav-logo" href="/" aria-label="Arcforge Digital Labs — home">
+        <span>Arcforge</span> Digital Labs
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="/about">About</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/support">Support</a></li>
+      </ul>
+    </nav>
 
-                <figure class="hero-visual">
-                    <picture>
-                        <source media="(min-width: 1024px)" srcset="assets/app/screenshots/liveMultiplayer-ipad-1.png">
-                        <source media="(min-width: 768px)" srcset="assets/app/screenshots/liveMultiplayer-ipad-1.png">
-                        <img
-                            src="assets/app/screenshots/liveMultiplayer-iphone-1.png"
-                            alt="Live multiplayer Reversi game in progress on iPhone"
-                            width="1290"
-                            height="2796"
-                            loading="eager"
-                        >
-                    </picture>
-                </figure>
-            </section>
+    <main id="main">
+      <!-- ── Hero ──────────────────────────────────────────────── -->
+      <section class="hero" id="top" aria-labelledby="hero-heading">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="eyebrow-dot" aria-hidden="true"></span>
+            Reversi for iPhone and iPad
+          </div>
+          <h1 id="hero-heading">
+            Reversi is a premium iPhone and iPad strategy game for
+            online play, Game Review, and daily puzzles.
+          </h1>
+          <p class="hero-subheadline">
+            <strong>The anti-ad premium Reversi experience</strong>
+            for players who want one place to play, review, and
+            improve. For players who know what chess.com did for
+            chess, Reversi brings that same improvement loop to
+            Othello with the first engine-based analysis tool for
+            the category.
+          </p>
+          <!-- TODO(phase32): live App Store URL -->
+          <a
+            class="hero-badge-link"
+            href="#TODO-phase32-app-store-url"
+            data-phase29-appstore-badge="true"
+            aria-label="Download Reversi on the App Store"
+          >
+            <img
+              src="/assets/app/app-store-badge.svg"
+              alt="Download on the App Store"
+              width="180"
+              height="53"
+              loading="eager"
+            >
+          </a>
+          <div class="hero-meta" aria-label="Reversi highlights">
+            <span>Live + async multiplayer</span>
+            <span>Daily puzzle</span>
+            <span>Free and Premium tiers</span>
+          </div>
+        </div>
 
-            <section aria-labelledby="feature-showcase-heading">
-                <div class="section-heading">
-                    <p class="section-kicker">Feature Showcase</p>
-                    <h2 id="feature-showcase-heading">
-                        Three ways Reversi keeps the board moving.
-                    </h2>
-                    <p>
-                        The shipping app focuses on playing well, improving
-                        quickly, and finding a reason to come back every day.
-                    </p>
-                </div>
+        <figure class="hero-visual" aria-label="App screenshot">
+          <picture>
+            <source
+              media="(min-width: 768px)"
+              srcset="/assets/app/screenshots/liveMultiplayer-ipad-1.png"
+              width="2048"
+              height="2732"
+            >
+            <img
+              src="/assets/app/screenshots/liveMultiplayer-iphone-1.png"
+              alt="Live multiplayer Reversi game in progress on iPhone"
+              width="1290"
+              height="2796"
+              loading="eager"
+            >
+          </picture>
+        </figure>
+      </section>
 
-                <div class="feature-grid">
-                    <article class="card feature-card">
-                        <div class="feature-icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                                <rect x="3" y="3" width="22" height="22" rx="6"
-                                    stroke="currentColor" stroke-width="1.8"></rect>
-                                <circle cx="10" cy="10" r="3" fill="#1a1a1a"></circle>
-                                <circle cx="18" cy="18" r="3" fill="#f5f5f5"
-                                    stroke="#0d3d16" stroke-width="1.2"></circle>
-                                <path d="M9.5 18.5L18.5 9.5" stroke="#4ade80"
-                                    stroke-width="2" stroke-linecap="round"></path>
-                            </svg>
-                        </div>
-                        <h3>Play live or take your turn later.</h3>
-                        <p>
-                            Match into live games when you want the full clock
-                            pressure and fast back-and-forth of the board.
-                        </p>
-                        <p>
-                            Switch to async games when you want the same account
-                            and progression to fit around the rest of the day.
-                        </p>
-                    </article>
+      <!-- ── Feature Showcase ───────────────────────────────────── -->
+      <section aria-labelledby="feature-showcase-heading">
+        <div class="section-heading">
+          <p class="section-kicker" aria-hidden="true">Feature Showcase</p>
+          <h2 id="feature-showcase-heading">
+            Three ways Reversi keeps the board moving.
+          </h2>
+          <p>
+            The shipping app focuses on playing well, improving
+            quickly, and finding a reason to come back every day.
+          </p>
+        </div>
 
-                    <article class="card feature-card">
-                        <div class="feature-icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                                <rect x="4" y="5" width="20" height="18" rx="5"
-                                    stroke="currentColor" stroke-width="1.8"></rect>
-                                <path d="M9 17L12 14L15 16L19 11" stroke="#4ade80"
-                                    stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
-                                <circle cx="19" cy="11" r="2" fill="#f5f5f5"
-                                    stroke="#0d3d16" stroke-width="1.2"></circle>
-                            </svg>
-                        </div>
-                        <h3>Review every swing with engine-backed insight.</h3>
-                        <p>
-                            Game Review breaks the result down move by move so
-                            strong ideas and costly misses are easier to spot.
-                        </p>
-                        <p>
-                            It is the premium differentiator for players who
-                            care about learning from every finished board.
-                        </p>
-                    </article>
-
-                    <article class="card feature-card">
-                        <div class="feature-icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                                <path d="M8 8.5H20" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round"></path>
-                                <path d="M8 14H20" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round"></path>
-                                <path d="M8 19.5H15" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round"></path>
-                                <path d="M18 18L20.2 20.2L24 16.4" stroke="#4ade80"
-                                    stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
-                                <rect x="4" y="4" width="20" height="20" rx="5"
-                                    stroke="currentColor" stroke-width="1.8"></rect>
-                            </svg>
-                        </div>
-                        <h3>Show up every day with a fresh board problem.</h3>
-                        <p>
-                            The daily puzzle turns improvement into a short,
-                            repeatable routine that fits into a commute or a
-                            break between matches.
-                        </p>
-                        <p>
-                            It keeps the app useful even when there is no time
-                            for a full tournament run or multiplayer session.
-                        </p>
-                    </article>
-                </div>
-            </section>
-
-            <section aria-labelledby="screenshots-heading">
-                <div class="section-heading">
-                    <p class="section-kicker">Gallery</p>
-                    <h2 id="screenshots-heading">
-                        A look inside the app.
-                    </h2>
-                    <p>
-                        From live play to deep review, everything is built for clarity and focus.
-                    </p>
-                </div>
-
-                <div class="screenshots-grid">
-                    <img src="assets/app/screenshots/liveMultiplayer-iphone-1.png" alt="Live multiplayer match" width="1290" height="2796" loading="lazy" decoding="async">
-                    <img src="assets/app/screenshots/gameReview-iphone-1.png" alt="Game Review analysis" width="1290" height="2796" loading="lazy" decoding="async">
-                    <img src="assets/app/screenshots/dailyPuzzle-iphone-1.png" alt="Daily puzzle interface" width="1290" height="2796" loading="lazy" decoding="async">
-                    <img src="assets/app/screenshots/tournament-iphone-1.png" alt="Tournament bracket view" width="1290" height="2796" loading="lazy" decoding="async">
-                    <img src="assets/app/screenshots/profile-iphone-1.png" alt="Player profile and stats" width="1290" height="2796" loading="lazy" decoding="async">
-                    <img src="assets/app/screenshots/theming-iphone-1.png" alt="Theme picker with custom board" width="1290" height="2796" loading="lazy" decoding="async">
-                </div>
-            </section>
-
-            <section aria-labelledby="pricing-heading">
-                <div class="section-heading">
-                    <p class="section-kicker">Pricing Snapshot</p>
-                    <h2 id="pricing-heading">
-                        Start free, then move to Premium for the full review loop.
-                    </h2>
-                    <p>
-                        Tier names match the app: Free for ad-supported play and
-                        Premium for the complete ad-free experience.
-                    </p>
-                </div>
-
-                <div class="pricing-grid">
-                    <article class="card pricing-card">
-                        <div class="tier-label">Free</div>
-                        <h3>Play the core game with ads.</h3>
-                        <p>
-                            Free includes live and async multiplayer, the daily
-                            puzzle, tournaments, themes, and the tutorial.
-                        </p>
-                        <p>
-                            It is the full board game loop with ads and a
-                            lighter Game Review allowance.
-                        </p>
-                        <ul class="pricing-list">
-                            <li>Ad-supported play</li>
-                            <li>Live + async multiplayer</li>
-                            <li>Daily puzzle, tournaments, themes, tutorial</li>
-                        </ul>
-                    </article>
-
-                    <article class="card pricing-card">
-                        <div class="tier-label">Premium</div>
-                        <h3>Remove ads and unlock full Game Review.</h3>
-                        <p>
-                            Premium is built for players who want uninterrupted
-                            sessions and deeper post-game study.
-                        </p>
-                        <p>
-                            Full Game Review, premium themes, and the ad-free
-                            experience make the improvement loop feel complete.
-                        </p>
-                        <ul class="pricing-list">
-                            <li>No ads</li>
-                            <li>Full Game Review access</li>
-                            <li>Premium themes and expanded study value</li>
-                        </ul>
-                    </article>
-                </div>
-            </section>
-
-            <section aria-labelledby="trust-heading">
-                <div class="section-heading">
-                    <p class="section-kicker">Trust</p>
-                    <h2 id="trust-heading">
-                        Built and supported by Arcforge Digital Labs LLC.
-                    </h2>
-                    <p>
-                        The landing page stays aligned with the legal and support
-                        surface used by the shipping iOS app.
-                    </p>
-                </div>
-
-                <div class="trust-grid">
-                    <article class="card trust-card">
-                        <h3>Company</h3>
-                        <p>
-                            Arcforge Digital Labs LLC publishes Reversi and
-                            maintains the canonical legal pages for the app.
-                        </p>
-                    </article>
-
-                    <article class="card trust-card">
-                        <h3>Legal</h3>
-                        <p>
-                            Read the
-                            <a href="/privacy">Privacy Policy</a>
-                            and
-                            <a href="/terms">Terms of Service</a>
-                            on the same domain referenced in the app.
-                        </p>
-                    </article>
-
-                    <article class="card trust-card">
-                        <h3>Support</h3>
-                        <p>
-                            Questions, bug reports, and account support go to
-                            <a href="mailto:support@arcforgedigitallabs.com">
-                                support@arcforgedigitallabs.com
-                            </a>.
-                        </p>
-                    </article>
-                </div>
-            </section>
-        </main>
-
-        <footer>
-            <div class="footer-inner">
-                <div>
-                    <p class="footer-brand">Arcforge Digital Labs LLC</p>
-                    <p class="footer-copy">
-                        Reversi for iPhone and iPad. Strategy play, daily
-                        improvement, and a premium path without ads.
-                    </p>
-                    <p class="legal-note">
-                        App Store badge artwork follows Apple marketing
-                        guidance; see
-                        <a
-                            href="https://www.apple.com/legal/intellectual-property/guidelinesfor3rdparties.html"
-                        >
-                            Apple's third-party trademark guidelines
-                        </a>.
-                    </p>
-                    <p class="copyright">
-                        &copy; <span id="year"></span> Arcforge Digital Labs LLC
-                    </p>
-                </div>
-
-                <ul class="footer-links">
-                    <li><a href="/privacy">Privacy</a></li>
-                    <li><a href="/terms">Terms</a></li>
-                    <li><a href="mailto:support@arcforgedigitallabs.com">Support</a></li>
-                </ul>
+        <div class="feature-grid">
+          <article class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true" focusable="false">
+                <rect x="3" y="3" width="22" height="22" rx="6"
+                  stroke="currentColor" stroke-width="1.8"></rect>
+                <circle cx="10" cy="10" r="3" class="piece-svg-black"></circle>
+                <circle cx="18" cy="18" r="3" class="piece-svg-white"></circle>
+                <path d="M9.5 18.5L18.5 9.5" class="piece-svg-accent"
+                  stroke-width="2" stroke-linecap="round"></path>
+              </svg>
             </div>
-        </footer>
-    </div>
+            <h3>Play live or take your turn later.</h3>
+            <p>
+              Match into live games when you want the full clock
+              pressure and fast back-and-forth of the board.
+            </p>
+            <p>
+              Switch to async games when you want the same account
+              and progression to fit around the rest of the day.
+            </p>
+          </article>
 
-    <script>
-        document.getElementById("year").textContent =
-            new Date().getFullYear();
-    </script>
+          <article class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true" focusable="false">
+                <rect x="4" y="5" width="20" height="18" rx="5"
+                  stroke="currentColor" stroke-width="1.8"></rect>
+                <path d="M9 17L12 14L15 16L19 11" class="piece-svg-accent"
+                  stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+                <circle cx="19" cy="11" r="2" class="piece-svg-white"></circle>
+              </svg>
+            </div>
+            <h3>Review every swing with engine-backed insight.</h3>
+            <p>
+              Game Review breaks the result down move by move so
+              strong ideas and costly misses are easier to spot.
+            </p>
+            <p>
+              It is the premium differentiator for players who
+              care about learning from every finished board.
+            </p>
+          </article>
+
+          <article class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true" focusable="false">
+                <path d="M8 8.5H20" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round"></path>
+                <path d="M8 14H20" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round"></path>
+                <path d="M8 19.5H15" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round"></path>
+                <path d="M18 18L20.2 20.2L24 16.4" class="piece-svg-accent"
+                  stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+                <rect x="4" y="4" width="20" height="20" rx="5"
+                  stroke="currentColor" stroke-width="1.8"></rect>
+              </svg>
+            </div>
+            <h3>Show up every day with a fresh board problem.</h3>
+            <p>
+              The daily puzzle turns improvement into a short,
+              repeatable routine that fits into a commute or a
+              break between matches.
+            </p>
+            <p>
+              It keeps the app useful even when there is no time
+              for a full tournament run or multiplayer session.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ── Screenshots ────────────────────────────────────────── -->
+      <section aria-labelledby="screenshots-heading">
+        <div class="section-heading">
+          <p class="section-kicker" aria-hidden="true">Gallery</p>
+          <h2 id="screenshots-heading">A look inside the app.</h2>
+          <p>
+            From live play to deep review, everything is built for
+            clarity and focus.
+          </p>
+        </div>
+
+        <div class="screenshots-grid">
+          <img
+            src="/assets/app/screenshots/liveMultiplayer-iphone-1.png"
+            alt="Live multiplayer match on iPhone"
+            width="1290" height="2796"
+            loading="lazy" decoding="async"
+          >
+          <img
+            src="/assets/app/screenshots/gameReview-iphone-1.png"
+            alt="Game Review analysis on iPhone"
+            width="1290" height="2796"
+            loading="lazy" decoding="async"
+          >
+          <img
+            src="/assets/app/screenshots/dailyPuzzle-iphone-1.png"
+            alt="Daily puzzle interface on iPhone"
+            width="1290" height="2796"
+            loading="lazy" decoding="async"
+          >
+          <img
+            src="/assets/app/screenshots/tournament-iphone-1.png"
+            alt="Tournament bracket view on iPhone"
+            width="1290" height="2796"
+            loading="lazy" decoding="async"
+          >
+          <img
+            src="/assets/app/screenshots/profile-iphone-1.png"
+            alt="Player profile and stats on iPhone"
+            width="1290" height="2796"
+            loading="lazy" decoding="async"
+          >
+          <img
+            src="/assets/app/screenshots/theming-iphone-1.png"
+            alt="Theme picker with custom board on iPhone"
+            width="1290" height="2796"
+            loading="lazy" decoding="async"
+          >
+        </div>
+      </section>
+
+      <!-- ── Pricing ─────────────────────────────────────────────── -->
+      <section aria-labelledby="pricing-heading">
+        <div class="section-heading">
+          <p class="section-kicker" aria-hidden="true">Pricing Snapshot</p>
+          <h2 id="pricing-heading">
+            Start free, then move to Premium for the full review loop.
+          </h2>
+          <p>
+            Tier names match the app: Free for ad-supported play and
+            Premium for the complete ad-free experience.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="card pricing-card">
+            <div class="tier-label">Free</div>
+            <h3>Play the core game with ads.</h3>
+            <p>
+              Free includes live and async multiplayer, the daily
+              puzzle, tournaments, themes, and the tutorial.
+            </p>
+            <p>
+              It is the full board game loop with ads and a
+              lighter Game Review allowance.
+            </p>
+            <ul class="pricing-list">
+              <li>Ad-supported play</li>
+              <li>Live + async multiplayer</li>
+              <li>Daily puzzle, tournaments, themes, tutorial</li>
+            </ul>
+          </article>
+
+          <article class="card pricing-card">
+            <div class="tier-label">Premium</div>
+            <h3>Remove ads and unlock full Game Review.</h3>
+            <p>
+              Premium is built for players who want uninterrupted
+              sessions and deeper post-game study.
+            </p>
+            <p>
+              Full Game Review, premium themes, and the ad-free
+              experience make the improvement loop feel complete.
+            </p>
+            <ul class="pricing-list">
+              <li>No ads</li>
+              <li>Full Game Review access</li>
+              <li>Premium themes and expanded study value</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- ── Trust ───────────────────────────────────────────────── -->
+      <section aria-labelledby="trust-heading">
+        <div class="section-heading">
+          <p class="section-kicker" aria-hidden="true">Trust</p>
+          <h2 id="trust-heading">
+            Built and supported by Arcforge Digital Labs LLC.
+          </h2>
+          <p>
+            The landing page stays aligned with the legal and support
+            surface used by the shipping iOS app.
+          </p>
+        </div>
+
+        <div class="trust-grid">
+          <article class="card trust-card">
+            <h3>Company</h3>
+            <p>
+              Arcforge Digital Labs LLC publishes Reversi and
+              maintains the canonical legal pages for the app.
+            </p>
+          </article>
+
+          <article class="card trust-card">
+            <h3>Legal</h3>
+            <p>
+              Read the
+              <a href="/privacy">Privacy Policy</a>
+              and
+              <a href="/terms">Terms of Service</a>
+              on the same domain referenced in the app.
+            </p>
+          </article>
+
+          <article class="card trust-card">
+            <h3>Support</h3>
+            <p>
+              Questions, bug reports, and account support go to
+              <a href="mailto:support@arcforgedigitallabs.com">
+                support@arcforgedigitallabs.com
+              </a>.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div>
+          <p class="footer-brand">Arcforge Digital Labs LLC</p>
+          <p class="footer-copy">
+            Reversi for iPhone and iPad. Strategy play, daily
+            improvement, and a premium path without ads.
+          </p>
+          <p class="legal-note">
+            App Store badge artwork follows Apple marketing
+            guidance; see
+            <a
+              href="https://www.apple.com/legal/intellectual-property/guidelinesfor3rdparties.html"
+            >
+              Apple's third-party trademark guidelines
+            </a>.
+          </p>
+          <p class="copyright">
+            &copy; <span id="year"></span> Arcforge Digital Labs LLC
+          </p>
+        </div>
+
+        <ul class="footer-links" role="list">
+          <li><a href="/about">About</a></li>
+          <li><a href="/press">Press</a></li>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
 </body>
 </html>

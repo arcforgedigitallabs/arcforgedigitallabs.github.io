@@ -1,0 +1,113 @@
+/* assets/css/tokens.css */
+/*
+ * Design tokens mirroring Reversi/Theme/Theme.swift.
+ *
+ * Font faces: system-font stacks only. SF Pro is accessed via
+ * -apple-system / BlinkMacSystemFont on Apple platforms; no
+ * self-hosting is required or permitted under Apple's licence.
+ *
+ * IMPORTANT: hex colour values (#rrggbb) live ONLY in this file.
+ * All other CSS files reference colours exclusively via var(--color-*).
+ */
+
+/* ─── Dark palette (default — matches the Reversi brand) ─────────── */
+:root {
+  /* Colours → Theme.Colors */
+  --color-bg:                #0a0a0f;   /* background dark */
+  --color-surface:           #16161f;   /* surface dark */
+  --color-surface-elevated:  #1e1e2a;   /* surfaceElevated dark */
+  --color-primary:           #4ade80;   /* accent dark */
+  --color-primary-secondary: #22c55e;   /* accentSecondary dark */
+  --color-on-primary:        #0a0a0f;   /* onAccent dark */
+  --color-board:             #1a5f2a;   /* boardBackground */
+  --color-board-border:      #0d3d16;   /* boardBorder */
+  --color-board-grid:        rgba(61, 154, 82, 0.58); /* cellBorder */
+  --color-piece-black:       #1a1a1a;   /* blackPiece */
+  --color-piece-white:       #f5f5f5;   /* whitePiece */
+  --color-text:              #f5f5f5;   /* textPrimary dark ≈ .label */
+  --color-text-secondary:    rgba(255, 255, 255, 0.72); /* secondaryLabel */
+  --color-text-muted:        rgba(255, 255, 255, 0.56); /* tertiaryLabel */
+  --color-border:            rgba(255, 255, 255, 0.08);
+  --color-border-strong:     rgba(255, 255, 255, 0.16);
+  --color-success:           #22c55e;
+  --color-warning:           #f59e0b;
+  --color-error:             #ef4444;
+
+  /* Typography → Theme.Typography */
+  --font-display: "SF Pro Rounded", "SF Pro Display",
+    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "SF Pro Text",
+    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Type scale — approximate iOS Dynamic Type pt sizes at default */
+  --type-h1:          clamp(2.75rem, 5vw, 4.6rem);  /* largeTitle ~34 pt */
+  --type-h2:          clamp(2rem, 3vw, 3rem);        /* title ~28 pt */
+  --type-h3:          1.375rem;                      /* title2 ~22 pt */
+  --type-body:        1rem;                          /* body ~17 pt */
+  --type-subheadline: 0.9375rem;                     /* subheadline ~15 pt */
+  --type-footnote:    0.875rem;                      /* footnote ~13 pt */
+  --type-caption:     0.8125rem;                     /* caption ~12 pt */
+
+  /* Spacing → Theme.Spacing (4-point base grid) */
+  --space-1: 4px;   /* xs */
+  --space-2: 8px;   /* sm */
+  --space-3: 16px;  /* md */
+  --space-4: 24px;  /* lg */
+  --space-5: 32px;  /* xl */
+  --space-6: 48px;  /* xxl */
+  --space-7: 64px;  /* web-only extension of the 4× scale */
+
+  /* Corner radius → Theme.Radius */
+  --radius-sm: 8px;   /* small */
+  --radius-md: 12px;  /* medium */
+  --radius-lg: 16px;  /* large */
+  --radius-xl: 24px;  /* xl */
+
+  /* Shadows → Theme.Shadows (dark defaults) */
+  --shadow-sm:   0 2px 4px rgba(0, 0, 0, 0.20);
+  --shadow-md:   0 4px 8px rgba(0, 0, 0, 0.25);
+  --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.30);
+  --shadow-hero: 0 24px 64px rgba(0, 0, 0, 0.34);
+}
+
+/* ─── Light palette override ─────────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg:                #f8f8fa;
+    --color-surface:           #ececf2;
+    --color-surface-elevated:  #ffffff;
+    --color-primary:           #15803d;  /* darker for 4.5:1 on light bg */
+    --color-primary-secondary: #166534;
+    --color-on-primary:        #ffffff;
+    --color-text:              #1a1a1a;
+    --color-text-secondary:    #444444;
+    --color-text-muted:        #666666;
+    --color-border:            rgba(0, 0, 0, 0.10);
+    --color-border-strong:     rgba(0, 0, 0, 0.20);
+
+    --shadow-sm:   0 2px 4px rgba(0, 0, 0, 0.10);
+    --shadow-md:   0 4px 8px rgba(0, 0, 0, 0.14);
+    --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.18);
+    --shadow-hero: 0 24px 64px rgba(0, 0, 0, 0.18);
+  }
+}
+
+/* ─── Force-dark override (landing page always uses dark palette) ─── */
+html[data-theme="dark"] {
+  --color-bg:                #0a0a0f;
+  --color-surface:           #16161f;
+  --color-surface-elevated:  #1e1e2a;
+  --color-primary:           #4ade80;
+  --color-primary-secondary: #22c55e;
+  --color-on-primary:        #0a0a0f;
+  --color-text:              #f5f5f5;
+  --color-text-secondary:    rgba(255, 255, 255, 0.72);
+  --color-text-muted:        rgba(255, 255, 255, 0.56);
+  --color-border:            rgba(255, 255, 255, 0.08);
+  --color-border-strong:     rgba(255, 255, 255, 0.16);
+
+  --shadow-sm:   0 2px 4px rgba(0, 0, 0, 0.20);
+  --shadow-md:   0 4px 8px rgba(0, 0, 0, 0.25);
+  --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.30);
+  --shadow-hero: 0 24px 64px rgba(0, 0, 0, 0.34);
+}

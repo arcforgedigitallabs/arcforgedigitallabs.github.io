@@ -1,0 +1,15 @@
+{
+  "name": "arcforgedigitallabs-site",
+  "version": "1.0.0",
+  "description": "Marketing site for Arcforge Digital Labs LLC — Reversi for iPhone and iPad.",
+  "private": true,
+  "scripts": {
+    "a11y": "node scripts/a11y-audit.js",
+    "lhci": "lhci autorun"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.9.0",
+    "@lhci/cli": "^0.14.0",
+    "playwright": "^1.44.0"
+  }
+}
