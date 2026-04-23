@@ -220,6 +220,19 @@ footer {
   font-size: var(--type-caption);
 }
 
+/* WCAG 2.2 SC 2.5.8 — give footer mailto chips an explicit
+ * >=24x24 px touch target with padding + breathing room between
+ * adjacent links so axe target-size passes on /about and similar
+ * pages. Keeps the visual footprint compact via inline-block. */
+footer a[href^="mailto:"] {
+  display: inline-block;
+  min-height: 24px;
+  padding: var(--space-1) var(--space-2);
+  margin: var(--space-1) 0;
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
+}
+
 /* ─── Support CTA (primary button) ───────────────────────────────── */
 .support-cta {
   display: inline-flex;
@@ -320,6 +333,18 @@ footer {
 
 .asset-downloads a {
   font-weight: 600;
+}
+
+/* WCAG 2.1 SC 1.4.3 — `--color-primary` (#15803d in light mode)
+ * does not clear 4.5:1 against the screenshot-card surface
+ * (#ececf2). Use the high-contrast text token + an explicit
+ * underline so the press-page download links stay link-shaped
+ * while passing axe color-contrast. */
+.screenshot-card figcaption a,
+.asset-downloads a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .logo-preview {

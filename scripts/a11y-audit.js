@@ -28,7 +28,11 @@ const PAGES = [
 
 async function auditPage(browser, path) {
   const url = `${BASE_URL}${path}`;
-  const page = await browser.newPage();
+  // @axe-core/playwright >= 4.9 requires a Page created via an explicit
+  // BrowserContext (browser.newPage() shorthand throws "Please use
+  // browser.newContext()"). Create + tear down a fresh context per page.
+  const context = await browser.newContext();
+  const page = await context.newPage();
   try {
     await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
     const results = await new AxeBuilder({ page })
@@ -41,6 +45,7 @@ async function auditPage(browser, path) {
     return { url, violations: critical, passes: results.passes.length };
   } finally {
     await page.close();
+    await context.close();
   }
 }
 

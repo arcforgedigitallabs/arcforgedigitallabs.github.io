@@ -1,0 +1,14 @@
+node_modules/
+
+# Lighthouse CI per-run reports — config file (`lighthouserc.json`)
+# stays tracked, but every `lhci` invocation drops fresh `lhr-*.json`,
+# `lhr-*.html`, `assertion-results.json`, and `links.json` artifacts in
+# the same directory. Keep them out of git.
+.lighthouseci/lhr-*.json
+.lighthouseci/lhr-*.html
+.lighthouseci/assertion-results.json
+.lighthouseci/links.json
+
+# Playwright outputs from local axe runs.
+playwright-report/
+test-results/
