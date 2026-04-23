@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="1290"
+    height="2796"
+    viewBox="0 0 1290 2796"
+    fill="none"
+>
+    <defs>
+        <linearGradient id="bg" x1="645" y1="0" x2="645" y2="2796"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#16161f"/>
+            <stop offset="1" stop-color="#0a0a0f"/>
+        </linearGradient>
+        <linearGradient id="accent" x1="240" y1="220" x2="1020" y2="2480"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#4ade80" stop-opacity="0.22"/>
+            <stop offset="1" stop-color="#22c55e" stop-opacity="0.05"/>
+        </linearGradient>
+        <filter id="shadow" x="110" y="110" width="1070" height="2576"
+            filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha"/>
+            <feOffset dy="32"/>
+            <feGaussianBlur stdDeviation="32"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix"
+                result="effect1_dropShadow_0_1"/>
+            <feBlend mode="normal" in="SourceGraphic"
+                in2="effect1_dropShadow_0_1" result="shape"/>
+        </filter>
+    </defs>
+
+    <rect width="1290" height="2796" rx="196" fill="url(#bg)"/>
+    <circle cx="1030" cy="280" r="240" fill="#4ade80" fill-opacity="0.12"/>
+    <circle cx="250" cy="2380" r="320" fill="#22c55e" fill-opacity="0.08"/>
+
+    <g filter="url(#shadow)">
+        <rect x="174" y="142" width="942" height="2512" rx="116"
+            fill="#111118"/>
+        <rect x="198" y="166" width="894" height="2464" rx="92"
+            fill="#16161f"/>
+        <rect x="502" y="206" width="286" height="38" rx="19"
+            fill="#1e1e2a"/>
+        <circle cx="925" cy="225" r="12" fill="#2b2b36"/>
+
+        <rect x="252" y="320" width="786" height="182" rx="42"
+            fill="#1e1e2a"/>
+        <text x="315" y="392" fill="#4ade80"
+            font-family="SF Pro Rounded, SF Pro Display, Arial, sans-serif"
+            font-size="40" font-weight="700" letter-spacing="6">
+            PHASE 29 PLACEHOLDER
+        </text>
+        <text x="315" y="456" fill="#f5f5f5"
+            font-family="SF Pro Rounded, SF Pro Display, Arial, sans-serif"
+            font-size="70" font-weight="700">
+            Reversi hero screenshot
+        </text>
+
+        <rect x="252" y="560" width="786" height="1028" rx="56"
+            fill="#1a5f2a" stroke="#0d3d16" stroke-width="8"/>
+
+        <g stroke="#3d9a52" stroke-opacity="0.58" stroke-width="4">
+            <line x1="350" y1="560" x2="350" y2="1588"/>
+            <line x1="448" y1="560" x2="448" y2="1588"/>
+            <line x1="546" y1="560" x2="546" y2="1588"/>
+            <line x1="644" y1="560" x2="644" y2="1588"/>
+            <line x1="742" y1="560" x2="742" y2="1588"/>
+            <line x1="840" y1="560" x2="840" y2="1588"/>
+            <line x1="938" y1="560" x2="938" y2="1588"/>
+            <line x1="252" y1="658" x2="1038" y2="658"/>
+            <line x1="252" y1="756" x2="1038" y2="756"/>
+            <line x1="252" y1="854" x2="1038" y2="854"/>
+            <line x1="252" y1="952" x2="1038" y2="952"/>
+            <line x1="252" y1="1050" x2="1038" y2="1050"/>
+            <line x1="252" y1="1148" x2="1038" y2="1148"/>
+            <line x1="252" y1="1246" x2="1038" y2="1246"/>
+            <line x1="252" y1="1344" x2="1038" y2="1344"/>
+            <line x1="252" y1="1442" x2="1038" y2="1442"/>
+        </g>
+
+        <circle cx="595" cy="903" r="36" fill="#f5f5f5"/>
+        <circle cx="693" cy="903" r="36" fill="#1a1a1a"/>
+        <circle cx="595" cy="1001" r="36" fill="#1a1a1a"/>
+        <circle cx="693" cy="1001" r="36" fill="#f5f5f5"/>
+        <circle cx="497" cy="903" r="18" fill="#f5f5f5" fill-opacity="0.28"/>
+        <circle cx="791" cy="1001" r="18" fill="#f5f5f5" fill-opacity="0.28"/>
+        <circle cx="693" cy="1099" r="18" fill="#f5f5f5" fill-opacity="0.28"/>
+
+        <rect x="252" y="1646" width="378" height="392" rx="40"
+            fill="#1e1e2a"/>
+        <rect x="660" y="1646" width="378" height="392" rx="40"
+            fill="#1e1e2a"/>
+        <rect x="252" y="2070" width="786" height="410" rx="40"
+            fill="#1e1e2a"/>
+
+        <rect x="298" y="1702" width="108" height="108" rx="28"
+            fill="#4ade80" fill-opacity="0.14"/>
+        <circle cx="340" cy="1744" r="22" fill="#1a1a1a"/>
+        <circle cx="364" cy="1768" r="22" fill="#f5f5f5"/>
+        <path d="M388 1730L462 1804" stroke="#4ade80" stroke-width="14"
+            stroke-linecap="round"/>
+
+        <rect x="706" y="1702" width="108" height="108" rx="28"
+            fill="#4ade80" fill-opacity="0.14"/>
+        <path d="M736 1770L768 1738L794 1764L838 1718" stroke="#4ade80"
+            stroke-width="14" stroke-linecap="round"
+            stroke-linejoin="round"/>
+        <circle cx="838" cy="1718" r="20" fill="#f5f5f5"/>
+
+        <text x="298" y="1874" fill="#f5f5f5"
+            font-family="SF Pro Rounded, SF Pro Display, Arial, sans-serif"
+            font-size="44" font-weight="700">
+            Live multiplayer
+        </text>
+        <text x="298" y="1934" fill="#9aa0ae"
+            font-family="SF Pro Text, Arial, sans-serif"
+            font-size="34">
+            Play fast matches now or
+        </text>
+        <text x="298" y="1980" fill="#9aa0ae"
+            font-family="SF Pro Text, Arial, sans-serif"
+            font-size="34">
+            take turns later.
+        </text>
+
+        <text x="706" y="1874" fill="#f5f5f5"
+            font-family="SF Pro Rounded, SF Pro Display, Arial, sans-serif"
+            font-size="44" font-weight="700">
+            Game Review
+        </text>
+        <text x="706" y="1934" fill="#9aa0ae"
+            font-family="SF Pro Text, Arial, sans-serif"
+            font-size="34">
+            Engine-backed insight after
+        </text>
+        <text x="706" y="1980" fill="#9aa0ae"
+            font-family="SF Pro Text, Arial, sans-serif"
+            font-size="34">
+            every finished board.
+        </text>
+
+        <text x="312" y="2170" fill="#4ade80"
+            font-family="SF Pro Rounded, SF Pro Display, Arial, sans-serif"
+            font-size="36" font-weight="700" letter-spacing="5">
+            DAILY RHYTHM
+        </text>
+        <text x="312" y="2248" fill="#f5f5f5"
+            font-family="SF Pro Rounded, SF Pro Display, Arial, sans-serif"
+            font-size="60" font-weight="700">
+            Daily puzzle. Ranked play.
+        </text>
+        <text x="312" y="2336" fill="#9aa0ae"
+            font-family="SF Pro Text, Arial, sans-serif"
+            font-size="36">
+            Placeholder art keeps the same aspect ratio that Step 3
+        </text>
+        <text x="312" y="2386" fill="#9aa0ae"
+            font-family="SF Pro Text, Arial, sans-serif"
+            font-size="36">
+            will use for the final curated App Store-ready screenshot.
+        </text>
+        <rect x="312" y="2438" width="666" height="10" rx="5"
+            fill="url(#accent)"/>
+    </g>
+</svg>

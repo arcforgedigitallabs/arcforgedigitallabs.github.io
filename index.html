@@ -3,395 +3,797 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcforge Digital Labs — iOS Apps &amp; Games</title>
-    <meta name="description" content="Arcforge Digital Labs builds polished iOS apps and games. Our first title: Reversi — the classic strategy board game with online multiplayer, AI opponents, and Elo ratings.">
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <title>Reversi for iPhone and iPad | Arcforge Digital Labs</title>
+    <meta
+        name="description"
+        content="Reversi is a premium iPhone and iPad strategy game with live and async multiplayer, Game Review, daily puzzles, tournaments, themes, and an ad-free Premium tier."
+    >
     <style>
         :root {
-            --bg:       #0f1117;
-            --surface:  #1a1d27;
-            --border:   #2a2e3d;
-            --accent:   #4ade80;
-            --accent2:  #22c55e;
-            --fg:       #f0f0f0;
-            --muted:    #8b8fa8;
-            --radius:   12px;
-            --font:     -apple-system, BlinkMacSystemFont, "SF Pro Display",
-                        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --bg: #0a0a0f;
+            --surface: #16161f;
+            --surface-elevated: #1e1e2a;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --accent: #4ade80;
+            --accent-secondary: #22c55e;
+            --board: #1a5f2a;
+            --board-border: #0d3d16;
+            --board-grid: rgba(61, 154, 82, 0.58);
+            --piece-black: #1a1a1a;
+            --piece-white: #f5f5f5;
+            --text: #f5f5f5;
+            --text-secondary: rgba(255, 255, 255, 0.72);
+            --text-muted: rgba(255, 255, 255, 0.56);
+            --shadow: 0 24px 64px rgba(0, 0, 0, 0.34);
+            --radius: 24px;
+            --radius-card: 16px;
+            --font-display: "SF Pro Rounded", "SF Pro Display",
+                -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --font-body: "SF Pro Text", -apple-system, BlinkMacSystemFont,
+                "Segoe UI", sans-serif;
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 16px;
+            --space-4: 24px;
+            --space-5: 32px;
+            --space-6: 48px;
+            --space-7: 64px;
         }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--fg);
+            margin: 0;
+            background:
+                radial-gradient(circle at top, rgba(74, 222, 128, 0.14), transparent 28%),
+                var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ── NAV ── */
-        nav {
-            position: sticky; top: 0; z-index: 100;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 1rem 2rem;
-            background: rgba(15,17,23,0.85);
-            backdrop-filter: saturate(180%) blur(16px);
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+            border-radius: 12px;
+        }
+
+        .site-shell {
+            min-height: 100vh;
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-4);
+            padding: var(--space-3) var(--space-5);
+            background: rgba(10, 10, 15, 0.82);
+            backdrop-filter: blur(16px) saturate(160%);
             border-bottom: 1px solid var(--border);
         }
+
         .nav-logo {
-            font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em;
-            color: var(--fg); text-decoration: none;
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
-        .nav-logo span { color: var(--accent); }
-        .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+
+        .nav-logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
         .nav-links a {
-            color: var(--muted); text-decoration: none;
-            font-size: 0.9rem; transition: color 0.15s;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: color 0.15s ease;
         }
-        .nav-links a:hover { color: var(--fg); }
 
-        /* ── HERO ── */
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
         .hero {
-            display: flex; flex-direction: column; align-items: center;
-            text-align: center;
-            padding: 6rem 1.5rem 4rem;
-            background: radial-gradient(ellipse 80% 60% at 50% -10%,
-                rgba(74,222,128,0.08) 0%, transparent 70%);
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(320px, 420px);
+            align-items: center;
+            gap: var(--space-6);
+            max-width: 1200px;
+            min-height: calc(100vh - 73px);
+            margin: 0 auto;
+            padding: var(--space-7) var(--space-5);
         }
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 3.75rem);
-            font-weight: 700; line-height: 1.1;
+
+        .hero-copy {
+            max-width: 620px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+            padding: 6px 12px;
+            border: 1px solid rgba(74, 222, 128, 0.22);
+            border-radius: 999px;
+            background: rgba(74, 222, 128, 0.08);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            font-family: var(--font-display);
+            line-height: 1.08;
             letter-spacing: -0.03em;
-            margin-bottom: 1.25rem;
-        }
-        .hero h1 em {
-            font-style: normal;
-            background: linear-gradient(135deg, var(--accent), #86efac);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hero p {
-            font-size: 1.15rem; color: var(--muted);
-            max-width: 560px; margin: 0 auto;
         }
 
-        /* ── DIVIDER ── */
-        .divider {
-            width: 48px; height: 3px; border-radius: 2px;
-            background: var(--border); margin: 4rem auto;
+        h1 {
+            font-size: clamp(2.75rem, 5vw, 4.6rem);
+            margin-bottom: var(--space-4);
         }
 
-        /* ── APPS SECTION ── */
-        .apps {
-            max-width: 1040px; margin: 0 auto;
-            padding: 0 1.5rem 5rem;
-        }
-        .section-label {
-            text-align: center; color: var(--accent);
-            font-size: 0.8rem; font-weight: 600;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            margin-bottom: 0.75rem;
-        }
-        .section-title {
-            text-align: center; font-size: clamp(1.6rem, 4vw, 2.2rem);
-            font-weight: 700; letter-spacing: -0.02em;
-            margin-bottom: 3rem;
+        .hero-subheadline {
+            margin: 0 0 var(--space-5);
+            color: var(--text-secondary);
+            font-size: clamp(1.05rem, 1.7vw, 1.2rem);
+            max-width: 58ch;
         }
 
-        /* ── APP CARD (featured) ── */
-        .app-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            transition: border-color 0.2s;
+        .hero-subheadline strong {
+            color: var(--text);
+            font-weight: 600;
         }
-        .app-card:hover { border-color: rgba(74,222,128,0.3); }
-        .app-info {
-            padding: 3rem 2.5rem;
-            display: flex; flex-direction: column; justify-content: center;
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            margin-top: var(--space-3);
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
-        .app-badge {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            background: rgba(74,222,128,0.12);
-            border: 1px solid rgba(74,222,128,0.25);
-            color: var(--accent); font-size: 0.75rem; font-weight: 500;
-            padding: 0.25rem 0.65rem; border-radius: 100px;
-            margin-bottom: 1.25rem; letter-spacing: 0.04em;
+
+        .hero-badge-link {
+            display: inline-flex;
             width: fit-content;
+            transition: transform 0.15s ease;
         }
-        .app-name {
-            font-size: 1.75rem; font-weight: 700;
-            letter-spacing: -0.02em; margin-bottom: 0.25rem;
+
+        .hero-badge-link:hover {
+            transform: translateY(-1px);
         }
-        .app-subtitle {
-            font-size: 0.95rem; color: var(--muted);
-            margin-bottom: 1rem;
+
+        .hero-badge-link img {
+            width: 180px;
+            height: auto;
         }
-        .app-desc {
-            font-size: 0.95rem; color: var(--muted);
-            line-height: 1.65; margin-bottom: 1.75rem;
-        }
-        .app-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-        .btn-primary {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: var(--accent); color: #0f1117;
-            padding: 0.65rem 1.25rem; border-radius: 10px;
-            font-size: 0.9rem; font-weight: 600; text-decoration: none;
-            transition: background 0.15s, transform 0.1s;
-        }
-        .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
-        .btn-secondary {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: transparent; color: var(--fg);
+
+        .hero-visual {
+            position: relative;
+            margin: 0;
+            padding: var(--space-4);
             border: 1px solid var(--border);
-            padding: 0.65rem 1.25rem; border-radius: 10px;
-            font-size: 0.9rem; font-weight: 500; text-decoration: none;
-            transition: border-color 0.15s, transform 0.1s;
-        }
-        .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
-
-        /* Board (right column of card) */
-        .app-visual {
-            display: flex; align-items: center; justify-content: center;
-            padding: 2.5rem;
-            background: radial-gradient(circle at 50% 50%,
-                rgba(74,222,128,0.06) 0%, transparent 70%);
-        }
-        .board {
-            display: grid; grid-template-columns: repeat(8, 1fr);
-            gap: 2px; background: #1a2e1a;
-            padding: 5px; border-radius: 10px;
-            box-shadow: 0 16px 60px rgba(0,0,0,0.5),
-                        0 0 0 1px rgba(74,222,128,0.12);
-            width: min(280px, 100%);
-        }
-        .cell {
-            aspect-ratio: 1; background: #1e3a1e;
-            border-radius: 2px; display: flex;
-            align-items: center; justify-content: center;
-        }
-        .disc { width: 76%; height: 76%; border-radius: 50%; }
-        .disc.b { background: #0f0f0f; box-shadow: 0 2px 5px rgba(0,0,0,0.6); }
-        .disc.w { background: #f0f0f0; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
-        .hint {
-            background: rgba(74,222,128,0.25); border-radius: 50%;
-            width: 26%; height: 26%;
+            border-radius: calc(var(--radius) + var(--space-2));
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+                var(--surface);
+            box-shadow: var(--shadow);
         }
 
-        /* ── FEATURES (inside app section) ── */
-        .features {
+        .hero-visual::after {
+            content: "";
+            position: absolute;
+            inset: auto 18px 18px;
+            height: 28px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.38);
+            filter: blur(18px);
+            z-index: 0;
+        }
+
+        .hero-visual img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            border-radius: 30px;
+        }
+
+        main section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-5) var(--space-7);
+        }
+
+        .section-heading {
+            max-width: 720px;
+            margin-bottom: var(--space-5);
+        }
+
+        .section-kicker {
+            margin: 0 0 var(--space-2);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(2rem, 3vw, 3rem);
+            margin-bottom: var(--space-3);
+        }
+
+        .section-heading p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .feature-grid,
+        .pricing-grid,
+        .trust-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem; margin-top: 2rem;
+            gap: var(--space-4);
         }
-        .feature-card {
-            background: var(--surface);
+
+        .feature-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .pricing-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .trust-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .card {
+            height: 100%;
+            padding: var(--space-5);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-            transition: border-color 0.2s;
+            border-radius: var(--radius-card);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)),
+                var(--surface);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
         }
-        .feature-card:hover { border-color: rgba(74,222,128,0.3); }
-        .feature-icon { font-size: 1.35rem; margin-bottom: 0.6rem; }
-        .feature-card h3 { font-size: 0.925rem; font-weight: 600; margin-bottom: 0.3rem; }
-        .feature-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
 
-        /* ── MORE COMING ── */
-        .coming-soon {
-            margin-top: 2rem;
-            background: var(--surface);
-            border: 1px dashed var(--border);
-            border-radius: var(--radius);
-            padding: 2.5rem 2rem;
-            text-align: center;
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            margin-bottom: var(--space-4);
+            border: 1px solid rgba(74, 222, 128, 0.22);
+            border-radius: 18px;
+            background: rgba(26, 95, 42, 0.24);
+            color: var(--accent);
         }
-        .coming-soon h3 {
-            font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem;
-        }
-        .coming-soon p { font-size: 0.9rem; color: var(--muted); }
 
-        /* ── FOOTER ── */
+        .feature-card h3,
+        .pricing-card h3,
+        .trust-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: var(--space-3);
+        }
+
+        .feature-card p,
+        .pricing-card p,
+        .trust-card p,
+        .footer-copy,
+        .legal-note {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        .feature-card p + p,
+        .pricing-card p + p,
+        .trust-card p + p {
+            margin-top: var(--space-3);
+        }
+
+        .pricing-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            opacity: 0.92;
+        }
+
+        .tier-label {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+            color: var(--accent);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .pricing-list {
+            margin: var(--space-4) 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pricing-list li {
+            position: relative;
+            margin-top: var(--space-3);
+            padding-left: var(--space-4);
+            color: var(--text-secondary);
+        }
+
+        .pricing-list li::before {
+            content: "";
+            position: absolute;
+            top: 0.7em;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .trust-card a,
+        .footer-links a,
+        .legal-note a {
+            color: var(--text);
+            text-decoration-color: rgba(74, 222, 128, 0.45);
+            text-underline-offset: 0.18em;
+        }
+
+        .trust-card a:hover,
+        .footer-links a:hover,
+        .legal-note a:hover {
+            color: var(--accent);
+        }
+
         footer {
-            border-top: 1px solid var(--border);
-            padding: 2.5rem 2rem;
-            display: flex; flex-wrap: wrap; gap: 1rem;
-            justify-content: space-between; align-items: center;
+            padding: 0 var(--space-5) var(--space-6);
         }
-        .footer-brand { font-size: 0.875rem; color: var(--muted); }
-        .footer-brand strong { color: var(--fg); }
-        .footer-links {
-            display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap;
-        }
-        .footer-links a {
-            color: var(--muted); text-decoration: none;
-            font-size: 0.875rem; transition: color 0.15s;
-        }
-        .footer-links a:hover { color: var(--fg); }
 
-        /* ── RESPONSIVE ── */
-        @media (max-width: 720px) {
-            .app-card { grid-template-columns: 1fr; }
-            .app-visual { padding: 2rem 1.5rem; }
-            .app-info { padding: 2rem 1.5rem; }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: var(--space-5);
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) auto;
+            gap: var(--space-4);
+            align-items: start;
         }
-        @media (max-width: 600px) {
-            nav { padding: 0.875rem 1.25rem; }
-            .nav-links { display: none; }
-            footer { flex-direction: column; align-items: flex-start; }
+
+        .footer-brand {
+            margin: 0 0 var(--space-3);
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            justify-content: flex-end;
+        }
+
+        .legal-note {
+            max-width: 72ch;
+            margin-top: var(--space-4);
+            font-size: 0.9rem;
+        }
+
+        .copyright {
+            margin-top: var(--space-4);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 960px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: var(--space-5);
+                padding-top: var(--space-6);
+                padding-bottom: var(--space-6);
+                min-height: auto;
+            }
+
+            .hero-copy,
+            .section-heading {
+                max-width: none;
+            }
+
+            .hero-visual {
+                max-width: 420px;
+                margin: 0 auto;
+            }
+
+            .feature-grid,
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav,
+            .hero,
+            main section,
+            footer {
+                padding-left: var(--space-4);
+                padding-right: var(--space-4);
+            }
+
+            .nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                gap: var(--space-3);
+            }
+
+            .card {
+                padding: var(--space-4);
+            }
+
+            .hero-badge-link img {
+                width: 168px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="site-shell">
+        <nav class="nav" aria-label="Primary">
+            <a class="nav-logo" href="/"><span>Arcforge</span> Digital Labs</a>
+            <ul class="nav-links">
+                <li><a href="/privacy">Privacy</a></li>
+                <li><a href="/terms">Terms</a></li>
+                <li><a href="mailto:support@arcforgedigitallabs.com">Support</a></li>
+            </ul>
+        </nav>
 
-<!-- NAV -->
-<nav>
-    <a class="nav-logo" href="/"><span>Arcforge</span> Digital Labs</a>
-    <ul class="nav-links">
-        <li><a href="#apps">Apps</a></li>
-        <li><a href="/privacy">Privacy</a></li>
-        <li><a href="/terms">Terms</a></li>
-        <li><a href="mailto:support@arcforgedigitallabs.com">Contact</a></li>
-    </ul>
-</nav>
+        <main>
+            <section class="hero" id="top">
+                <div class="hero-copy">
+                    <div class="eyebrow">
+                        <span class="eyebrow-dot" aria-hidden="true"></span>
+                        Reversi for iPhone and iPad
+                    </div>
+                    <h1>
+                        Reversi is a premium iPhone and iPad strategy game for
+                        online play, Game Review, and daily puzzles.
+                    </h1>
+                    <p class="hero-subheadline">
+                        <strong>The anti-ad premium Reversi experience</strong>
+                        for players who want one place to play, review, and
+                        improve. For players who know what chess.com did for
+                        chess, Reversi brings that same improvement loop to
+                        Othello with the first engine-based analysis tool for
+                        the category.
+                    </p>
+                    <!-- TODO(phase32): live App Store URL -->
+                    <a
+                        class="hero-badge-link"
+                        href="#TODO-phase32-app-store-url"
+                        data-phase29-appstore-badge="true"
+                        aria-label="Download Reversi on the App Store"
+                    >
+                        <img
+                            src="assets/app/app-store-badge.svg"
+                            alt="Download on the App Store"
+                            width="180"
+                            height="53"
+                        >
+                    </a>
+                    <div class="hero-meta" aria-label="Reversi highlights">
+                        <span>Live + async multiplayer</span>
+                        <span>Daily puzzle</span>
+                        <span>Free and Premium tiers</span>
+                    </div>
+                </div>
 
-<!-- HERO -->
-<section class="hero">
-    <h1>We build <em>polished</em><br>iOS apps &amp; games.</h1>
-    <p>
-        Arcforge Digital Labs is a small studio focused on crafting
-        high-quality mobile experiences. Strategy games, productivity
-        tools, and more &mdash; one great app at a time.
-    </p>
-</section>
+                <figure class="hero-visual">
+                    <img
+                        src="assets/app/phase29-step3-hero-placeholder.svg"
+                        alt="Placeholder Reversi product screenshot until Step 3 ships."
+                        width="1290"
+                        height="2796"
+                        data-step3-placeholder="true"
+                    >
+                </figure>
+            </section>
 
-<div class="divider"></div>
+            <section aria-labelledby="feature-showcase-heading">
+                <div class="section-heading">
+                    <p class="section-kicker">Feature Showcase</p>
+                    <h2 id="feature-showcase-heading">
+                        Three ways Reversi keeps the board moving.
+                    </h2>
+                    <p>
+                        The shipping app focuses on playing well, improving
+                        quickly, and finding a reason to come back every day.
+                    </p>
+                </div>
 
-<!-- APPS -->
-<section class="apps" id="apps">
+                <div class="feature-grid">
+                    <article class="card feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <rect x="3" y="3" width="22" height="22" rx="6"
+                                    stroke="currentColor" stroke-width="1.8"></rect>
+                                <circle cx="10" cy="10" r="3" fill="#1a1a1a"></circle>
+                                <circle cx="18" cy="18" r="3" fill="#f5f5f5"
+                                    stroke="#0d3d16" stroke-width="1.2"></circle>
+                                <path d="M9.5 18.5L18.5 9.5" stroke="#4ade80"
+                                    stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+                        </div>
+                        <h3>Play live or take your turn later.</h3>
+                        <p>
+                            Match into live games when you want the full clock
+                            pressure and fast back-and-forth of the board.
+                        </p>
+                        <p>
+                            Switch to async games when you want the same account
+                            and progression to fit around the rest of the day.
+                        </p>
+                    </article>
 
-    <!-- REVERSI (featured) -->
-    <div class="app-card">
-        <div class="app-info">
-            <div class="app-badge">
-                <svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor">
-                    <circle cx="5" cy="5" r="5"/>
-                </svg>
-                Featured
+                    <article class="card feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <rect x="4" y="5" width="20" height="18" rx="5"
+                                    stroke="currentColor" stroke-width="1.8"></rect>
+                                <path d="M9 17L12 14L15 16L19 11" stroke="#4ade80"
+                                    stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"></path>
+                                <circle cx="19" cy="11" r="2" fill="#f5f5f5"
+                                    stroke="#0d3d16" stroke-width="1.2"></circle>
+                            </svg>
+                        </div>
+                        <h3>Review every swing with engine-backed insight.</h3>
+                        <p>
+                            Game Review breaks the result down move by move so
+                            strong ideas and costly misses are easier to spot.
+                        </p>
+                        <p>
+                            It is the premium differentiator for players who
+                            care about learning from every finished board.
+                        </p>
+                    </article>
+
+                    <article class="card feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <path d="M8 8.5H20" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round"></path>
+                                <path d="M8 14H20" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round"></path>
+                                <path d="M8 19.5H15" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round"></path>
+                                <path d="M18 18L20.2 20.2L24 16.4" stroke="#4ade80"
+                                    stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"></path>
+                                <rect x="4" y="4" width="20" height="20" rx="5"
+                                    stroke="currentColor" stroke-width="1.8"></rect>
+                            </svg>
+                        </div>
+                        <h3>Show up every day with a fresh board problem.</h3>
+                        <p>
+                            The daily puzzle turns improvement into a short,
+                            repeatable routine that fits into a commute or a
+                            break between matches.
+                        </p>
+                        <p>
+                            It keeps the app useful even when there is no time
+                            for a full tournament run or multiplayer session.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section aria-labelledby="pricing-heading">
+                <div class="section-heading">
+                    <p class="section-kicker">Pricing Snapshot</p>
+                    <h2 id="pricing-heading">
+                        Start free, then move to Premium for the full review loop.
+                    </h2>
+                    <p>
+                        Tier names match the app: Free for ad-supported play and
+                        Premium for the complete ad-free experience.
+                    </p>
+                </div>
+
+                <div class="pricing-grid">
+                    <article class="card pricing-card">
+                        <div class="tier-label">Free</div>
+                        <h3>Play the core game with ads.</h3>
+                        <p>
+                            Free includes live and async multiplayer, the daily
+                            puzzle, tournaments, themes, and the tutorial.
+                        </p>
+                        <p>
+                            It is the full board game loop with ads and a
+                            lighter Game Review allowance.
+                        </p>
+                        <ul class="pricing-list">
+                            <li>Ad-supported play</li>
+                            <li>Live + async multiplayer</li>
+                            <li>Daily puzzle, tournaments, themes, tutorial</li>
+                        </ul>
+                    </article>
+
+                    <article class="card pricing-card">
+                        <div class="tier-label">Premium</div>
+                        <h3>Remove ads and unlock full Game Review.</h3>
+                        <p>
+                            Premium is built for players who want uninterrupted
+                            sessions and deeper post-game study.
+                        </p>
+                        <p>
+                            Full Game Review, premium themes, and the ad-free
+                            experience make the improvement loop feel complete.
+                        </p>
+                        <ul class="pricing-list">
+                            <li>No ads</li>
+                            <li>Full Game Review access</li>
+                            <li>Premium themes and expanded study value</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section aria-labelledby="trust-heading">
+                <div class="section-heading">
+                    <p class="section-kicker">Trust</p>
+                    <h2 id="trust-heading">
+                        Built and supported by Arcforge Digital Labs LLC.
+                    </h2>
+                    <p>
+                        The landing page stays aligned with the legal and support
+                        surface used by the shipping iOS app.
+                    </p>
+                </div>
+
+                <div class="trust-grid">
+                    <article class="card trust-card">
+                        <h3>Company</h3>
+                        <p>
+                            Arcforge Digital Labs LLC publishes Reversi and
+                            maintains the canonical legal pages for the app.
+                        </p>
+                    </article>
+
+                    <article class="card trust-card">
+                        <h3>Legal</h3>
+                        <p>
+                            Read the
+                            <a href="/privacy">Privacy Policy</a>
+                            and
+                            <a href="/terms">Terms of Service</a>
+                            on the same domain referenced in the app.
+                        </p>
+                    </article>
+
+                    <article class="card trust-card">
+                        <h3>Support</h3>
+                        <p>
+                            Questions, bug reports, and account support go to
+                            <a href="mailto:support@arcforgedigitallabs.com">
+                                support@arcforgedigitallabs.com
+                            </a>.
+                        </p>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-inner">
+                <div>
+                    <p class="footer-brand">Arcforge Digital Labs LLC</p>
+                    <p class="footer-copy">
+                        Reversi for iPhone and iPad. Strategy play, daily
+                        improvement, and a premium path without ads.
+                    </p>
+                    <p class="legal-note">
+                        App Store badge artwork follows Apple marketing
+                        guidance; see
+                        <a
+                            href="https://www.apple.com/legal/intellectual-property/guidelinesfor3rdparties.html"
+                        >
+                            Apple's third-party trademark guidelines
+                        </a>.
+                    </p>
+                    <p class="copyright">
+                        &copy; <span id="year"></span> Arcforge Digital Labs LLC
+                    </p>
+                </div>
+
+                <ul class="footer-links">
+                    <li><a href="/privacy">Privacy</a></li>
+                    <li><a href="/terms">Terms</a></li>
+                    <li><a href="mailto:support@arcforgedigitallabs.com">Support</a></li>
+                </ul>
             </div>
-            <h3 class="app-name">Reversi</h3>
-            <p class="app-subtitle">Classic Strategy Board Game &middot; iOS</p>
-            <p class="app-desc">
-                The timeless strategy game, reimagined for iPhone. Play against
-                a powerful AI with eight difficulty levels, compete in real-time
-                online matches ranked by Elo, explore openings, and solve
-                tactical puzzles.
-            </p>
-            <div class="app-actions">
-                <a class="btn-primary" href="https://apps.apple.com/app/reversi/id000000000">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                    </svg>
-                    App Store
-                </a>
-                <a class="btn-secondary" href="#reversi-features">Features</a>
-            </div>
-        </div>
-        <div class="app-visual">
-            <div class="board" id="board"></div>
-        </div>
+        </footer>
     </div>
 
-    <!-- Reversi features -->
-    <div class="features" id="reversi-features">
-        <div class="feature-card">
-            <div class="feature-icon">&#127760;</div>
-            <h3>Online Multiplayer</h3>
-            <p>Real-time ranked matches with Elo ratings and a global leaderboard.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">&#129302;</div>
-            <h3>Powerful AI</h3>
-            <p>Eight levels from beginner to expert with endgame solving.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">&#128218;</div>
-            <h3>Opening Explorer</h3>
-            <p>Study named openings and build your repertoire.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">&#129513;</div>
-            <h3>Puzzles</h3>
-            <p>Elo-rated tactical puzzles to sharpen your skills.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">&#128214;</div>
-            <h3>Interactive Tutorial</h3>
-            <p>Learn rules, openings, endgame technique, and parity.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">&#127912;</div>
-            <h3>Themes &amp; Dark Mode</h3>
-            <p>Multiple board and piece themes with full dark mode.</p>
-        </div>
-    </div>
-
-    <!-- More apps placeholder -->
-</section>
-
-<!-- FOOTER -->
-<footer>
-    <div class="footer-brand">
-        <strong>Arcforge Digital Labs LLC</strong><br>
-        7901 4th St N, STE 300 &middot; St. Petersburg, FL 33702
-    </div>
-    <ul class="footer-links">
-        <li><a href="/privacy">Privacy Policy</a></li>
-        <li><a href="/terms">Terms of Service</a></li>
-        <li><a href="mailto:support@arcforgedigitallabs.com">Support</a></li>
-        <li><a href="mailto:legal@arcforgedigitallabs.com">Legal</a></li>
-    </ul>
-    <p style="color:var(--muted);font-size:0.8rem;width:100%;text-align:right">
-        &copy; <span id="yr"></span> Arcforge Digital Labs LLC
-    </p>
-</footer>
-
-<script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
-
-    const state = [
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,2,1,0,0,0],
-        [0,0,0,1,2,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-    ];
-    const hints = [[2,3],[3,2],[4,5],[5,4]];
-    const board = document.getElementById('board');
-    for (let r = 0; r < 8; r++) {
-        for (let c = 0; c < 8; c++) {
-            const cell = document.createElement('div');
-            cell.className = 'cell';
-            const v = state[r][c];
-            if (v === 1) {
-                const d = document.createElement('div');
-                d.className = 'disc b'; cell.appendChild(d);
-            } else if (v === 2) {
-                const d = document.createElement('div');
-                d.className = 'disc w'; cell.appendChild(d);
-            } else if (hints.some(([hr,hc]) => hr===r && hc===c)) {
-                const d = document.createElement('div');
-                d.className = 'hint'; cell.appendChild(d);
-            }
-            board.appendChild(cell);
-        }
-    }
-</script>
+    <script>
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+    </script>
 </body>
 </html>
