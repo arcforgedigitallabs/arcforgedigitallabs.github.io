@@ -1,0 +1,7 @@
+<!-- arcforgedigitallabs.github.io/assets/brand/arcforge-wordmark.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="96" viewBox="0 0 360 96" role="img" aria-labelledby="wm-title wm-desc">
+  <title id="wm-title">Arcforge Digital Labs wordmark</title>
+  <desc id="wm-desc">Wordmark with Arcforge in rounded style and Digital Labs subtitle</desc>
+  <text x="20" y="58" font-family="SF Pro Rounded, -apple-system, BlinkMacSystemFont, sans-serif" font-size="34" font-weight="700" fill="#15803d">Arcforge</text>
+  <text x="188" y="58" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" font-size="20" font-weight="500" fill="#444444">Digital Labs</text>
+</svg>

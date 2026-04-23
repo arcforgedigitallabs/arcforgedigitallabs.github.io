@@ -220,6 +220,120 @@ footer {
   font-size: var(--type-caption);
 }
 
+/* ─── Support CTA (primary button) ───────────────────────────────── */
+.support-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-3) 0 var(--space-4);
+  min-height: 44px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: var(--type-subheadline);
+  border: none;
+  cursor: pointer;
+}
+
+.support-cta:hover {
+  opacity: 0.9;
+}
+
+.support-cta:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* ─── FAQ (definition list) ──────────────────────────────────────── */
+.faq-list {
+  margin-top: var(--space-4);
+}
+
+.faq-list dt {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--type-subheadline);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.faq-list dd {
+  margin-left: 0;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+/* ─── Brand & press grids ───────────────────────────────────────── */
+.screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+.screenshot-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  background: var(--color-surface);
+}
+
+.screenshot-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+.swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-3) 0;
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 8rem;
+}
+
+.swatch-chip {
+  width: 100%;
+  min-height: var(--space-6);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-strong);
+}
+
+.asset-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 var(--space-4);
+}
+
+.asset-downloads a {
+  font-weight: 600;
+}
+
+.logo-preview {
+  max-width: min(100%, 360px);
+  height: auto;
+  margin: var(--space-3) 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.apple-support-anchor {
+  scroll-margin-top: var(--space-7);
+}
+
 /* ─── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 640px) {
   main {
