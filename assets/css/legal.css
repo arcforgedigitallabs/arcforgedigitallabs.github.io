@@ -335,11 +335,12 @@ footer a[href^="mailto:"] {
   font-weight: 600;
 }
 
-/* WCAG 2.1 SC 1.4.3 — `--color-primary` (#15803d in light mode)
- * does not clear 4.5:1 against the screenshot-card surface
- * (#ececf2). Use the high-contrast text token + an explicit
- * underline so the press-page download links stay link-shaped
- * while passing axe color-contrast. */
+/* WCAG 2.1 SC 1.4.3 — the default `--color-primary` (the
+ * light-mode green) does not clear 4.5:1 against the
+ * screenshot-card surface tint, so press-page download links
+ * fail axe color-contrast. Switch them to the high-contrast
+ * `--color-text` token plus an explicit underline so they keep
+ * their link affordance while clearing the contrast gate. */
 .screenshot-card figcaption a,
 .asset-downloads a {
   color: var(--color-text);
