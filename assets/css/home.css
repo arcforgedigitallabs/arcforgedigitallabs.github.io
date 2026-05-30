@@ -110,6 +110,11 @@ a:focus-visible {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+  /* Flexbox collapses whitespace text nodes between flex items, so the
+   * literal space in `<span>Arcforge</span> Digital Labs` disappears
+   * and the brand renders as "ArcforgeDigital Labs". Restore the
+   * visual space with a proportional gap (~ one space character). */
+  gap: 0.25em;
 }
 
 .nav-logo span {
