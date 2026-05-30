@@ -140,15 +140,21 @@ a:focus-visible {
 }
 
 /* ─── Hero ───────────────────────────────────────────────────────── */
+/* The hero deliberately does NOT set `min-height: 100vh` or
+ * `align-items: center`. A tall right-column visual (a portrait phone
+ * screenshot at 1290x2796) combined with vertical centering pushes the
+ * headline below the fold on standard desktop viewports — the regression
+ * the user reported. Top-align both columns and let the section grow to
+ * its natural content height; the visual is independently capped via
+ * `.hero-visual`/`.hero-visual img` below. */
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 420px);
-  align-items: center;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 380px);
+  align-items: start;
   gap: var(--space-6);
   max-width: 1200px;
-  min-height: calc(100vh - 73px);
   margin: 0 auto;
-  padding: var(--space-7) var(--space-5);
+  padding: var(--space-6) var(--space-5) var(--space-7);
 }
 
 .hero-copy {
@@ -240,31 +246,37 @@ h1 {
 .hero-visual {
   position: relative;
   margin: 0;
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: calc(var(--radius-xl) + var(--space-2));
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
-    var(--color-surface);
-  box-shadow: var(--shadow-hero);
+  padding: 0;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  align-self: start;
 }
 
 .hero-visual::after {
   content: "";
   position: absolute;
-  inset: auto 18px 18px;
-  height: 28px;
+  inset: auto 14% 8%;
+  height: 24px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.38);
-  filter: blur(18px);
+  background: rgba(0, 0, 0, 0.45);
+  filter: blur(28px);
   z-index: 0;
 }
 
 .hero-visual img {
   position: relative;
   z-index: 1;
+  display: block;
   width: 100%;
-  border-radius: 30px;
+  height: auto;
+  /* The hero visual is the brand board graphic at
+   * /assets/brand/reversi-board-hero.svg — a clean 1024x1024 rendering
+   * of the Reversi board itself, NOT a screenshot of the iOS app.
+   * Preserve the SVG's intrinsic 1:1 ratio so the board never gets
+   * stretched or cropped by a hard-coded screenshot aspect-ratio. */
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-xl);
 }
 
 /* ─── Sections ───────────────────────────────────────────────────── */
@@ -319,6 +331,10 @@ main section {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* `.screenshots-grid` lived under the home Gallery section that was
+ * removed in the Phase 29 real-captures-only back-patch (2026-04-24).
+ * Selectors retained so a future Phase 32 Gallery (with REAL App Store
+ * captures) can reuse the styling without re-deriving it. */
 .screenshots-grid {
   display: grid;
   gap: var(--space-4);
@@ -514,9 +530,8 @@ footer {
   .hero {
     grid-template-columns: 1fr;
     gap: var(--space-5);
-    padding-top: var(--space-6);
+    padding-top: var(--space-5);
     padding-bottom: var(--space-6);
-    min-height: auto;
   }
 
   .hero-copy,
@@ -525,8 +540,7 @@ footer {
   }
 
   .hero-visual {
-    max-width: 420px;
-    margin: 0 auto;
+    max-width: 320px;
   }
 
   .feature-grid,

@@ -295,6 +295,10 @@ footer a[href^="mailto:"] {
   background: var(--color-surface);
 }
 
+/* `.screenshot-card` lived under the press-kit "Product screenshots"
+ * grid that was removed in the Phase 29 real-captures-only back-patch
+ * (2026-04-24). Selectors retained so the Phase 32 press-kit Gallery
+ * (with REAL App Store captures) can reuse the styling. */
 .screenshot-card img {
   width: 100%;
   height: auto;

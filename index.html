@@ -21,12 +21,16 @@
     property="og:description"
     content="The anti-ad premium Reversi experience. Live multiplayer, engine-backed Game Review, daily puzzles, and tournaments — no ads on Premium."
   >
+  <!-- OG image points at the brand board graphic, NOT a screenshot of
+       the iOS app. Real App Store captures land in Phase 32; until then
+       no surface on this domain may claim to be a Reversi-app screen. -->
   <meta
     property="og:image"
-    content="https://www.arcforgedigitallabs.com/assets/app/screenshots/liveMultiplayer-iphone-1.png"
+    content="https://www.arcforgedigitallabs.com/assets/brand/reversi-board-hero.svg"
   >
-  <meta property="og:image:width" content="1290">
-  <meta property="og:image:height" content="2796">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta property="og:image:alt" content="Reversi board in the standard starting position">
   <meta property="og:site_name" content="Arcforge Digital Labs">
 
   <!-- Twitter Card -->
@@ -38,8 +42,9 @@
   >
   <meta
     name="twitter:image"
-    content="https://www.arcforgedigitallabs.com/assets/app/screenshots/liveMultiplayer-iphone-1.png"
+    content="https://www.arcforgedigitallabs.com/assets/brand/reversi-board-hero.svg"
   >
+  <meta name="twitter:image:alt" content="Reversi board in the standard starting position">
 
   <!-- Tokens first — all colour / spacing / type vars live here -->
   <link rel="stylesheet" href="/assets/css/tokens.css">
@@ -119,22 +124,19 @@
           </div>
         </div>
 
-        <figure class="hero-visual" aria-label="App screenshot">
-          <picture>
-            <source
-              media="(min-width: 768px)"
-              srcset="/assets/app/screenshots/liveMultiplayer-ipad-1.png"
-              width="2048"
-              height="2732"
-            >
-            <img
-              src="/assets/app/screenshots/liveMultiplayer-iphone-1.png"
-              alt="Live multiplayer Reversi game in progress on iPhone"
-              width="1290"
-              height="2796"
-              loading="eager"
-            >
-          </picture>
+        <!-- Brand visual: a clean rendering of the Reversi (Othello)
+             board itself, NOT a screenshot of the iOS app. Curated App
+             Store captures land in Phase 32. Until then this surface
+             must never display a hallucinated "screenshot" of the app
+             or any user-identifying content. -->
+        <figure class="hero-visual" aria-label="Reversi board visual">
+          <img
+            src="/assets/brand/reversi-board-hero.svg"
+            alt="Reversi board in the standard starting position"
+            width="1024"
+            height="1024"
+            loading="eager"
+          >
         </figure>
       </section>
 
@@ -226,56 +228,15 @@
         </div>
       </section>
 
-      <!-- ── Screenshots ────────────────────────────────────────── -->
-      <section aria-labelledby="screenshots-heading">
-        <div class="section-heading">
-          <p class="section-kicker" aria-hidden="true">Gallery</p>
-          <h2 id="screenshots-heading">A look inside the app.</h2>
-          <p>
-            From live play to deep review, everything is built for
-            clarity and focus.
-          </p>
-        </div>
-
-        <div class="screenshots-grid">
-          <img
-            src="/assets/app/screenshots/liveMultiplayer-iphone-1.png"
-            alt="Live multiplayer match on iPhone"
-            width="1290" height="2796"
-            loading="lazy" decoding="async"
-          >
-          <img
-            src="/assets/app/screenshots/gameReview-iphone-1.png"
-            alt="Game Review analysis on iPhone"
-            width="1290" height="2796"
-            loading="lazy" decoding="async"
-          >
-          <img
-            src="/assets/app/screenshots/dailyPuzzle-iphone-1.png"
-            alt="Daily puzzle interface on iPhone"
-            width="1290" height="2796"
-            loading="lazy" decoding="async"
-          >
-          <img
-            src="/assets/app/screenshots/tournament-iphone-1.png"
-            alt="Tournament bracket view on iPhone"
-            width="1290" height="2796"
-            loading="lazy" decoding="async"
-          >
-          <img
-            src="/assets/app/screenshots/profile-iphone-1.png"
-            alt="Player profile and stats on iPhone"
-            width="1290" height="2796"
-            loading="lazy" decoding="async"
-          >
-          <img
-            src="/assets/app/screenshots/theming-iphone-1.png"
-            alt="Theme picker with custom board on iPhone"
-            width="1290" height="2796"
-            loading="lazy" decoding="async"
-          >
-        </div>
-      </section>
+      <!-- The home Gallery section was removed in the Phase 29
+           "real-captures-only" back-patch (2026-04-24). The previous
+           version painted six hand-built mockups generated by
+           scripts/build-mock-screenshots.js, which depicted invented
+           usernames, ratings, and UI states that the shipping iOS app
+           does not produce. Those mockups had no business shipping as
+           "screenshots." A new Gallery (with real captures from the
+           shipping app) lands in Phase 32 alongside the App Store
+           submission. -->
 
       <!-- ── Pricing ─────────────────────────────────────────────── -->
       <section aria-labelledby="pricing-heading">
